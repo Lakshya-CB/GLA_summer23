@@ -1,14 +1,22 @@
 package Lec_06;
 
-public class chudoku {
-	public static void main(String[] args) {
-		char[][] board = { { '5', '3', '.', '.', '7', '.', '.', '.', '.' },
-				{ '6', '.', '.', '1', '9', '5', '.', '.', '.' }, { '.', '9', '8', '.', '.', '.', '.', '6', '.' },
-				{ '8', '.', '.', '.', '6', '.', '.', '.', '3' }, { '4', '.', '.', '8', '.', '3', '.', '.', '1' },
-				{ '7', '.', '.', '.', '2', '.', '.', '.', '6' }, { '.', '6', '.', '.', '.', '.', '2', '8', '.' },
-				{ '.', '.', '.', '4', '1', '9', '.', '.', '5' }, { '.', '.', '.', '.', '8', '.', '.', '7', '9' } };
+import java.util.Scanner;
 
+public class chudoku {
+	static boolean found = false;
+	public static void main(String[] args) {
+		Scanner scn = new Scanner(System.in);
+		scn.next();
+		char[][] board =new char[9][9];
+		
+		for(int i=0;i<9;i++) {
+			for(int j=0;j<9;j++) {
+				board[i][j] = scn.next().charAt(0);
+			}
+		}
+		
 		solve(0, 0, board);
+		print(board);
 	}
 
 	public static void print(char[][] board) {
@@ -28,20 +36,24 @@ public class chudoku {
 		}
 		if (r == 9) {
 //			
-			print(board);
-			System.out.println("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+//			print(board);
+			found = true;
+//			System.out.println("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
 			return;
 		}
-		if (board[r][c] != '.') {
+		if (board[r][c] != '0') {
 			solve(r, c + 1, board);
 		} else {
 			for (char ch = '1'; ch <= '9'; ch = (char) (ch + 1)) {
 				if (isSafe(ch, r, c, board)) {
 					board[r][c] = ch;
 					solve(r, c + 1, board);
+					if(found) {
+						return;
+					}
 				}
 			}
-			board[r][c] = '.';
+			board[r][c] = '0';
 		}
 	}
 
